@@ -1,0 +1,88 @@
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.spinner import Spinner
+from kivy.uix.textinput import TextInput
+from kivy.uix.label import Label
+from kivy.uix.filechooser import FileChooserListView
+
+class AppFrame(BoxLayout):
+    def __init__(self, **kwargs):
+        super(AppFrame, self).__init__(**kwargs)
+        self.orientation = 'vertical'
+        self.spacing = 10
+        self.padding = 10
+
+        # Title
+        self.title_label = Label(text='Chromatic Scale Generator', font_size='25sp', bold=True, size_hint_y=0.1)
+        self.add_widget(self.title_label)
+
+        # Sample folder
+        self.dir_text = Label(text='Sample folder:')
+        self.add_widget(self.dir_text)
+
+        self.dir_picker = FileChooserListView(path='.', size_hint_y=0.1)
+        self.add_widget(self.dir_picker)
+
+        # Starting note
+        self.start_note_text = Label(text='Starting note:')
+        self.add_widget(self.start_note_text)
+
+        start_note_choices = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+        self.start_note_choice = Spinner(values=start_note_choices, size_hint_y=0.1)
+        self.add_widget(self.start_note_choice)
+
+        # Starting octave
+        self.start_octave_text = Label(text='Starting octave:')
+        self.add_widget(self.start_octave_text)
+
+        start_octave_choices = ['2', '3', '4']
+        self.start_octave_choice = Spinner(values=start_octave_choices, size_hint_y=0.1)
+        self.add_widget(self.start_octave_choice)
+
+        # Range
+        self.range_text = Label(text='Range:')
+        self.add_widget(self.range_text)
+
+        self.range_input = TextInput(hint_text='24', input_filter='int', size_hint_y=0.1)
+        self.add_widget(self.range_input)
+
+        # Sample gap
+        self.gap_text = Label(text='Sample gap (seconds):')
+        self.add_widget(self.gap_text)
+
+        self.gap_input = TextInput(hint_text='0.1', input_filter='float', size_hint_y=0.1)
+        self.add_widget(self.gap_input)
+
+        # Pitched and Samples checkboxes
+        self.pitched_check = CheckBox(active=True)
+        self.add_widget(self.pitched_check)
+
+        self.samples_check = CheckBox(active=True)
+        self.add_widget(self.samples_check)
+
+        # Generate button
+        self.generate_button = Button(text='Generate Chromatic', size_hint_y=0.1)
+        self.generate_button.bind(on_press=self.generate_chromatic)
+        self.add_widget(self.generate_button)
+
+    def generate_chromatic(self, instance):
+        sample_folder = self.dir_picker.path
+        starting_note = self.start_note_choice.text
+        starting_octave = self.start_octave_choice.text
+        range_value = self.range_input.text
+        sample_gap = self.gap_input.text
+        pitched = self.pitched_check.active
+        dump_samples = self.samples_check.active
+
+        # Call the corresponding function to generate the chromatic scale using the given parameters.
+        # Add your implementation here.
+
+class GeneratorApp(App):
+    def build(self):
+        return AppFrame()
+
+
+if __name__ == '__main__':
+    GeneratorApp().run()
